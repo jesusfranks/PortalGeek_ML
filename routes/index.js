@@ -31,7 +31,6 @@ router.get('/posts', validateToken, async (req, res) => {
       const meliObject = new MeliObject(res.locals.access_token);
       const user = await meliObject.get('/users/me');
       const items = (await meliObject.get(`/users/${user.id}/items/search`)).results || [];
-      console.log(items);
       if (items.length) {
         const result = [];
         const promises = items.map(item_id => meliObject.get(`/items/${item_id}`));

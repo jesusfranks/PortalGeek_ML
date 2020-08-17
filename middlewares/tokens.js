@@ -39,7 +39,7 @@ const validateToken = (req, res, next) => {
           }
           setTokens(response);
           res.locals.access_token = tokens.access_token;
-          console.log('tokens', tokens)
+          //console.log('tokens', tokens)
           res.redirect(redirect_uri);
         });
       } else {
