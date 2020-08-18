@@ -7,7 +7,7 @@ const postear = async(token) =>{
     try {
       const meliObject = new MeliObject(token);
       const user = await meliObject.get('/users/me');
-      const items = (await meliObject.get(`/users/${user.id}/items/search`)).results || [];
+      /*const items = (await meliObject.get(`/users/${user.id}/items/search`)).results || [];
       if (items.length) {
         const result = [];
         const promises = items.map(item_id => meliObject.get(`/items/${item_id}`));
@@ -40,6 +40,8 @@ const postear = async(token) =>{
         // SE AGREGA NUEVO ITEM PORQUE NO EXISTE NINGUNO
         postForm(productos[i], user, meliObject);
       }
+      */
+     postForm(productos[i], user, meliObject);
     } catch(err) {
       console.log('Something went wrong', err);
     }
