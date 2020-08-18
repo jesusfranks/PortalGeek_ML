@@ -69,7 +69,7 @@ router.get('/form', validateToken, async(req, res) =>{
           }
         }
       } else {
-        // SE AGREGA NUEVO ITEM PORQUE NO EXISTE NINGUNO
+        // SE AGREGA NUEVO ITEM PORQUE NO EXISTE NI UNO
         postForm(req, res, user, meliObject);
       }
     } catch(err) {
@@ -99,7 +99,7 @@ async function postForm(req, res, user, meliObject){
           }
         ]
       });
-      console.log('Title item:', productos.name);
+      console.log('Title item:', req.body.name);
       console.log('publicado en la categoría:', predict.name);
       console.log('category probability (0-1):', predict.prediction_probability, predict.variations);
       res.redirect('/posts');
