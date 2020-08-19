@@ -23,6 +23,11 @@ const postear = async(token) =>{
 
 async function postProducts(producto, user, meliObject){
   try {
+    var images = [];
+    const imgs  = await pool.query('SELECT image FROM products_images WHERE product_id = ?',[producto.id]);
+    for(var i = 0; i<imgs.length; i++){
+      images[i] = {source: imgs[i].image}
+    }
     const predict = await meliObject.get(`/sites/${user.site_id}/category_predictor/predict?title=${encodeURIComponent(producto.title)}`);
       await meliObject.post('/items', {
         title: producto.title,
@@ -35,11 +40,7 @@ async function postProducts(producto, user, meliObject){
         condition: 'new',
         description: producto.description,
         tags: [ 'immediate_payment' ],
-        pictures: [
-          {
-            source: producto.image //agregar mas de la bd tabla "products_images" por "product_id"
-          }
-        ]
+        pictures: images
       });
       console.log('Title item:', producto.title);
      /* const ids = {
