@@ -36,7 +36,7 @@ app.use(require('./routes/postOne'));
 app.use(require('./routes/postEverything'));
 
 //Cronjob
-job.start();
+//job.start();
 rTokenJob.start()
 
 module.exports = app;

@@ -39,7 +39,6 @@ router.get('/posts', validateToken, async (req, res) => {
         }
         res.render('posts', { items: result });
       } else {
-        //res.status(404).send('no items were found :(');
         res.render('posts');
       }
     } catch(err) {

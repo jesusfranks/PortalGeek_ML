@@ -2,12 +2,13 @@
   <div class="items-list">
     {{#if items}}
       {{#each items}}
-        <a target="_blank" rel="noopener noreferrer nofollow" href="{{this.permalink}}">
+          <a target="_blank" rel="noopener noreferrer nofollow" href="{{this.permalink}}">
           <div>
-            <img src="{{item.secure_thumbnail}}" />
+            <img src="{{this.secure_thumbnail}}" />
             <h3>{{ this.title }}</h3>
           </div>
-        </a>
+          </a>
+          <a type="button" class="btn btn-danger" href="/formEdit/{{this.item_id}}">Editar</a>
       {{/each}}
     {{else}}
       <h1>No hay items :(</h1>
