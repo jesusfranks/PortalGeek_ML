@@ -94,12 +94,10 @@ async function postForm(req, res, user, meliObject){
         description: req.body.description,
         tags: [ 'immediate_payment' ],
         pictures: [
-          {
-            source: `${req.protocol}://${req.get('host')}/pictures/${req.file.filename}`
-          }
+          {source: `${req.protocol}://${req.get('host')}/pictures/${req.file.filename}`}
         ]
-      }).then(res => res.json())
-      .then(data => obj = data)
+      }).then(res => res.json());
+      /*.then(data => obj = data)
       .then(async() => {
         console.log('obj', obj)
         const ids = {
@@ -107,7 +105,7 @@ async function postForm(req, res, user, meliObject){
         item_id: obj.id
       }
       await pool2.query('INSERT INTO links set ?', [ids])
-    })
+    })*/
       console.log('Title item:', req.body.title);
       console.log('publicado en la categoría:', predict.name);
       console.log('category probability (0-1):', predict.prediction_probability, predict.variations);
