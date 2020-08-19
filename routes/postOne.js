@@ -96,8 +96,8 @@ async function postForm(req, res, user, meliObject){
         pictures: [
           {source: `${req.protocol}://${req.get('host')}/pictures/${req.file.filename}`}
         ]
-      }).then(res => res.json());
-      /*.then(data => obj = data)
+      })/*.then(res => res.json());
+      .then(data => obj = data)
       .then(async() => {
         console.log('obj', obj)
         const ids = {
