@@ -82,7 +82,7 @@ router.post('/post', validateToken, upload.single('picture'), async (req, res) =
 async function postForm(req, res, user, meliObject){
     try {
       const predict = await meliObject.get(`/sites/${user.site_id}/category_predictor/predict?title=${encodeURIComponent(req.body.title)}`);
-      const it = await meliObject.post('/items', {
+      await meliObject.post('/items', {
         title: req.body.title,
         category_id: predict.id,
         price: req.body.price,
@@ -98,13 +98,17 @@ async function postForm(req, res, user, meliObject){
             source: `${req.protocol}://${req.get('host')}/pictures/${req.file.filename}`
           }
         ]
-      });
-      console.log('Title item:', req.body.title);
-      /*const ids = {
+      }).then(res => res.json())
+      .then(data => obj = data)
+      .then(async() => {
+        console.log('obj', obj)
+        const ids = {
         product_id: producto.id,
-        item_id: it.id
+        item_id: obj.id
       }
-      await pool2.query('INSERT INTO links set ?', [ids])*/
+      await pool2.query('INSERT INTO links set ?', [ids])
+    })
+      console.log('Title item:', req.body.title);
       console.log('publicado en la categoría:', predict.name);
       console.log('category probability (0-1):', predict.prediction_probability, predict.variations);
       res.redirect('/posts');
