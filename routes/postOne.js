@@ -100,11 +100,11 @@ async function postForm(req, res, user, meliObject){
         ]
       });
       console.log('Title item:', req.body.title);
-      const ids = {
+      /*const ids = {
         product_id: producto.id,
         item_id: it.id
       }
-      await pool2.query('INSERT INTO links set ?', [ids])
+      await pool2.query('INSERT INTO links set ?', [ids])*/
       console.log('publicado en la categoría:', predict.name);
       console.log('category probability (0-1):', predict.prediction_probability, predict.variations);
       res.redirect('/posts');
