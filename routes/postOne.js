@@ -4,6 +4,7 @@ const multer = require('multer');
 const fetch = require('node-fetch');
 const { validateToken } = require('../middlewares/tokens');
 const { MeliObject } = require('../utils');
+const { pool2 } = require('../bin/dbConnection')
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => cb(null, './public/pictures'),
@@ -53,17 +54,23 @@ router.get('/formEdit/:item_id', validateToken, async(req, res) =>{
   }
 });
 
-router.post('/post/:item_id', validateToken, upload.single('picture'), async (req, res) => {
+router.post('/postE/:item_id', validateToken, upload.single('picture'), async (req, res) => {
   const item_id = req.params;
   try {
     const meliObject = new MeliObject(res.locals.access_token);
-    if(item_id){
-      const item = await meliObject.get(`/items/${item_id}`);
-      updatePostForm(req, res, item)
-    }else{
-      const user = await meliObject.get('/users/me');
-      postForm(req, res, user, meliObject);
-    }
+    const item = await meliObject.get(`/items/${item_id}`);
+    updatePostForm(req, res, item)
+  } catch(err) {
+  console.log('Something went wrong', err);
+  res.status(500).send(`Error! ${err}`);
+  }
+});
+
+router.post('/post', validateToken, upload.single('picture'), async (req, res) => {
+  try {
+    const meliObject = new MeliObject(res.locals.access_token);
+    const user = await meliObject.get('/users/me');
+    postForm(req, res, user , meliObject);
   } catch(err) {
   console.log('Something went wrong', err);
   res.status(500).send(`Error! ${err}`);
@@ -75,7 +82,7 @@ router.post('/post/:item_id', validateToken, upload.single('picture'), async (re
 async function postForm(req, res, user, meliObject){
     try {
       const predict = await meliObject.get(`/sites/${user.site_id}/category_predictor/predict?title=${encodeURIComponent(req.body.title)}`);
-      await meliObject.post('/items', {
+      const it = await meliObject.post('/items', {
         title: req.body.title,
         category_id: predict.id,
         price: req.body.price,
@@ -93,6 +100,11 @@ async function postForm(req, res, user, meliObject){
         ]
       });
       console.log('Title item:', req.body.title);
+      const ids = {
+        product_id: producto.id,
+        item_id: it.id
+      }
+      await pool2.query('INSERT INTO links set ?', [ids])
       console.log('publicado en la categoría:', predict.name);
       console.log('category probability (0-1):', predict.prediction_probability, predict.variations);
       res.redirect('/posts');
@@ -128,43 +140,4 @@ async function updatePostForm(req, res, item){
 }
 
 
-
 module.exports = router;
-
-/*const items = (await meliObject.get(`/users/${user.id}/items/search`)).results || [];
-      if (items.length) {
-        const result = [];
-        const promises = items.map(item_id => meliObject.get(`/items/${item_id}`));
-        for await (item of promises) {
-          result.push(item);
-        }
-        for( var i = 0 ; i < result.length; i++){
-          if(result[i].title == req.body.title){
-            // SE ACTUALIZAN DATOS
-            const act = {
-              price: req.body.price,
-              currency_id: req.body.currency,
-              available_quantity: req.body.quantity,
-              listing_type_id: req.body.listing_type,
-              condition: req.body.condition,
-              description: req.body.description,
-              pictures: [
-                {source: `${req.protocol}://${req.get('host')}/pictures/${req.file.filename}`}
-              ]
-            }
-            await fetch(`https://api.mercadolibre.com/items/${result[i].item_id}?access_token=${res.locals.access_token}`,{
-              method: "PUT",
-              body: JSON.stringify(act)
-            })
-            .then(res => res.json())
-            //
-          }else{
-            // SE AGREGA NUEVO ITEM PORQUE NO EXISTE
-            postForm(req, res, user, meliObject);
-          }
-        }
-      } else {
-        // SE AGREGA NUEVO ITEM PORQUE NO EXISTE NI UNO
-        postForm(req, res, user, meliObject);
-      } 
-      */
