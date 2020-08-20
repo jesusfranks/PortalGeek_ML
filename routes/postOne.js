@@ -54,6 +54,36 @@ router.get('/formEdit/:item_id', validateToken, async(req, res) =>{
   }
 });
 
+router.post('/post', validateToken, upload.single('picture'), async (req, res) => {
+  try {
+    const meliObject = new MeliObject(res.locals.access_token);
+    const user = await meliObject.get('/users/me');
+    const predict = await meliObject.get(`/sites/${user.site_id}/category_predictor/predict?title=${encodeURIComponent(req.body.title)}`);
+    await meliObject.post('/items', {
+      title: req.body.title,
+      category_id: predict.id,
+      price: req.body.price,
+      currency_id: req.body.currency,
+      available_quantity: req.body.quantity,
+      buying_mode: 'buy_it_now',
+      listing_type_id: req.body.listing_type,
+      condition: req.body.condition,
+      description: req.body.description,
+      tags: [ 'immediate_payment' ],
+      pictures: [
+        {source: `${req.protocol}://${req.get('host')}/pictures/${req.file.filename}`}
+      ]
+    });
+    console.log('Title item:', req.body.title);
+    console.log('publicado en la categoría:', predict.name);
+    console.log('category probability (0-1):', predict.prediction_probability, predict.variations);
+    res.redirect('/posts');
+  } catch(err) {
+  console.log('Something went wrong', err);
+  res.status(500).send(`Error! ${err}`);
+  }
+});
+
 router.post('/postE/:item_id', validateToken, upload.single('picture'), async (req, res) => {
   const item_id = req.params;
   try {
@@ -66,46 +96,7 @@ router.post('/postE/:item_id', validateToken, upload.single('picture'), async (r
   }
 });
 
-router.post('/post', validateToken, upload.single('picture'), async (req, res) => {
-  try {
-    const meliObject = new MeliObject(res.locals.access_token);
-    const user = await meliObject.get('/users/me');
-    postForm(req, res, user , meliObject);
-  } catch(err) {
-  console.log('Something went wrong', err);
-  res.status(500).send(`Error! ${err}`);
-  }
-});
-
 //---- Helpers
-
-async function postForm(req, res, user, meliObject){
-    try {
-      const predict = await meliObject.get(`/sites/${user.site_id}/category_predictor/predict?title=${encodeURIComponent(req.body.title)}`);
-      await meliObject.post('/items', {
-        title: req.body.title,
-        category_id: predict.id,
-        price: req.body.price,
-        currency_id: req.body.currency,
-        available_quantity: req.body.quantity,
-        buying_mode: 'buy_it_now',
-        listing_type_id: req.body.listing_type,
-        condition: req.body.condition,
-        description: req.body.description,
-        tags: [ 'immediate_payment' ],
-        pictures: [
-          {source: `${req.protocol}://${req.get('host')}/pictures/${req.file.filename}`}
-        ]
-      });
-      console.log('Title item:', req.body.title);
-      console.log('publicado en la categoría:', predict.name);
-      console.log('category probability (0-1):', predict.prediction_probability, predict.variations);
-      res.redirect('/posts');
-    } catch(err) {
-      console.log('Something went wrong', err);
-      res.status(500).send(`Error! ${err}`);
-    }
-  }
 
 async function updatePostForm(req, res, item){
   try {
