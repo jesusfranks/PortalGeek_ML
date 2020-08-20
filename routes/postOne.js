@@ -96,17 +96,7 @@ async function postForm(req, res, user, meliObject){
         pictures: [
           {source: `${req.protocol}://${req.get('host')}/pictures/${req.file.filename}`}
         ]
-      }).then(res => console.log(res));
-      /*.then(res => res.json());
-      .then(data => obj = data)
-      .then(async() => {
-        console.log('obj', obj)
-        const ids = {
-        product_id: producto.id,
-        item_id: obj.id
-      }
-      await pool2.query('INSERT INTO links set ?', [ids])
-    })*/
+      });
       console.log('Title item:', req.body.title);
       console.log('publicado en la categoría:', predict.name);
       console.log('category probability (0-1):', predict.prediction_probability, predict.variations);
