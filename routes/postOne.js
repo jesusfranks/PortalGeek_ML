@@ -4,7 +4,8 @@ const multer = require('multer');
 const fetch = require('node-fetch');
 const { validateToken } = require('../middlewares/tokens');
 const { MeliObject } = require('../utils');
-const { pool2 } = require('../bin/dbConnection')
+const { pool2 } = require('../bin/dbConnection');
+const { Router } = require('express');
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => cb(null, './public/pictures'),
@@ -71,16 +72,17 @@ router.post('/post', validateToken, upload.single('picture'), async (req, res) =
       description: req.body.description,
       tags: [ 'immediate_payment' ],
       pictures: [
-        {source: `${req.protocol}://${req.get('host')}/pictures/${req.file.filename}`}
+        {
+          source: `${req.protocol}://${req.get('host')}/pictures/${req.file.filename}`
+        }
       ]
     });
-    console.log('Title item:', req.body.title);
-    console.log('publicado en la categoría:', predict.name);
+    console.log('publicado na categoria:', predict.name);
     console.log('category probability (0-1):', predict.prediction_probability, predict.variations);
     res.redirect('/posts');
   } catch(err) {
-  console.log('Something went wrong', err);
-  res.status(500).send(`Error! ${err}`);
+    console.log('Something went wrong', err);
+    res.status(500).send(`Error! ${err}`);
   }
 });
 
