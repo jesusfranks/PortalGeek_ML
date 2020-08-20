@@ -47,7 +47,7 @@ async function postProducts(producto, user, meliObject){
         product_id: producto.id,
         item_id: 
       }
-      await pool2.query('INSERT INTO links set ?', [ids])*/
+      await pool2.query('INSERT INTO ml_items set ?', [ids])*/
       console.log('publicado en la categoría:', predict.name);
       console.log('category probability (0-1):', predict.prediction_probability, predict.variations);
   } catch(err) {
@@ -57,6 +57,11 @@ async function postProducts(producto, user, meliObject){
 
 async function updatePostProducts(producto, item_id, token){
   try {
+    var images = [];
+    const imgs  = await pool.query('SELECT image FROM products_images WHERE product_id = ?',[producto.id]);
+    for(var i = 0; i<imgs.length; i++){
+      images[i] = {source: imgs[i].image}
+    }
     const act = {
       title: producto.title,
       price: producto.price,
@@ -65,9 +70,7 @@ async function updatePostProducts(producto, item_id, token){
       listing_type_id: producto.listing_type,
       condition: producto.condition,
       description: producto.description,
-      pictures: [
-        {source: producto.image} // se cambia
-      ]
+      pictures: images
     }
     await fetch(`https://api.mercadolibre.com/items/${item_id}?access_token=${token}`,{
       method: "PUT",
