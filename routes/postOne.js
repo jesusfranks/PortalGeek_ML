@@ -82,7 +82,7 @@ router.post('/post', validateToken, upload.single('picture'), async (req, res) =
 async function postForm(req, res, user, meliObject){
     try {
       const predict = await meliObject.get(`/sites/${user.site_id}/category_predictor/predict?title=${encodeURIComponent(req.body.title)}`);
-      const productoposteado = await meliObject.post('/items', {
+      await meliObject.post('/items', {
         title: req.body.title,
         category_id: predict.id,
         price: req.body.price,
@@ -96,8 +96,7 @@ async function postForm(req, res, user, meliObject){
         pictures: [
           {source: `${req.protocol}://${req.get('host')}/pictures/${req.file.filename}`}
         ]
-      })
-      console.log('productoposteado', productoposteado)
+      }).then(res => console.log(res));
       /*.then(res => res.json());
       .then(data => obj = data)
       .then(async() => {
