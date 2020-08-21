@@ -1,0 +1,38 @@
+<div class="container">
+  <form action="/postE/{{item.id}}" method="POST" enctype="multipart/form-data">
+    <div>
+      <h1>{{item.title}}</h1>
+    </div>
+
+    <div>
+      <label for="price">Precio:</label>
+      <input type="text" name="price" id="price" value="{{item.price}}" />
+    </div>
+
+    <div>
+      <label for="quantity">Cantidad disponible:</label>
+      <input type="number" name="quantity" id="quantity" value="{{item.available_quantity}}" min="1" />
+    </div>
+
+    <div>
+      <label for="description">Descripcion del producto:</label><br />
+      <textarea name="description" id="description" cols="30" rows="5">{{description.plain_text}}</textarea>
+    </div>
+
+    <div>
+      <label>Seleccionar status de publicación del producto:</label>
+      <label for="status_active">
+        <input checked type="radio" name="status" id="status_active" value="active" /> active
+      </label>
+      &nbsp;&nbsp;
+      <label for="status_paused">
+        <input type="radio" name="status" id="status_paused" value="paused" /> paused
+      </label>
+    </div>
+
+    <div>
+      <button type="submit">Publicar edición</button>
+    </div>
+  </form>
+  
+</div>

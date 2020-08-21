@@ -1,5 +1,5 @@
 const { MeliObject } = require('../utils');
-const { pool, pool2 } = require('../bin/dbConnection')
+const { pool, pool2 } = require('../bin/dbConnection');
 
 const postear = async(token) =>{
   const productos = await pool.query('SELECT * FROM products WHERE STATUS = 1'); //DISPONIBLE ACTIVO
@@ -29,7 +29,7 @@ async function postProducts(producto, user, meliObject){
       images[i] = {source: imgs[i].image}
     }
     const predict = await meliObject.get(`/sites/${user.site_id}/category_predictor/predict?title=${encodeURIComponent(producto.title)}`);
-      await meliObject.post('/items', {
+    const item = await meliObject.post('/items', {
         title: producto.title,
         category_id: predict.id,
         price: producto.price,
@@ -43,11 +43,11 @@ async function postProducts(producto, user, meliObject){
         pictures: images
       });
       console.log('Title item:', producto.title);
-     /* const ids = {
+     const ids = {
         product_id: producto.id,
-        item_id: 
+        item_id: item.id
       }
-      await pool2.query('INSERT INTO ml_items set ?', [ids])*/
+      await pool2.query('INSERT INTO ml_items set ?', [ids])
       console.log('publicado en la categoría:', predict.name);
       console.log('category probability (0-1):', predict.prediction_probability, predict.variations);
   } catch(err) {
@@ -63,20 +63,21 @@ async function updatePostProducts(producto, item_id, token){
       images[i] = {source: imgs[i].image}
     }
     const act = {
-      title: producto.title,
       price: producto.price,
-      currency_id: producto.currency,
       available_quantity: producto.quantity,
-      listing_type_id: producto.listing_type,
-      condition: producto.condition,
-      description: producto.description,
       pictures: images
+    }
+    const des = {
+      plain_text: producto.description
     }
     await fetch(`https://api.mercadolibre.com/items/${item_id}?access_token=${token}`,{
       method: "PUT",
       body: JSON.stringify(act)
-    })
-    .then(res => res.json())
+    });
+    await fetch(`https://api.mercadolibre.com/items/${item_id}/description?access_token=${token}`,{
+      method: "PUT",
+      body: JSON.stringify(des)
+    });
   } catch(err) {
     console.log('Something went wrong', err);
   }
@@ -84,38 +85,3 @@ async function updatePostProducts(producto, item_id, token){
 
 
 module.exports = postear;
-
-/*const items = (await meliObject.get(`/users/${user.id}/items/search`)).results || [];
-      if (items.length) {
-        const result = [];
-        const promises = items.map(item_id => meliObject.get(`/items/${item_id}`));
-        for await (item of promises) {
-          result.push(item);
-        }
-        for( var j = 0 ; j < result.length; j++){
-          if(result[j].title == productos[i].title){
-            // SE ACTUALIZAN DATOS
-            const act = {
-              price: productos[i].price,
-              available_quantity: productos[i].quantity,
-              description: productos[i].description,
-              pictures: [
-                {source: productos[i].image}
-              ]
-            }
-            await fetch(`https://api.mercadolibre.com/items/${result[j].item_id}?access_token=${token}`,{
-              method: "PUT",
-              body: JSON.stringify(act)
-            })
-            .then(res => res.json())
-            //
-          }else{
-            // SE AGREGA NUEVO ITEM PORQUE NO EXISTE
-            postProducts(productos[i], user, meliObject);
-          }
-        }
-      } else {
-        // SE AGREGA NUEVO ITEM PORQUE NO EXISTE NINGUNO
-        postProducts(productos[i], user, meliObject);
-      }
-      */

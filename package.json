@@ -4,8 +4,8 @@
   "description": "Es un servicio para la tienda Portalgeek para publicar en mercadolibre",
   "main": "index.js",
   "scripts": {
-    "dev": "npx nodemon ./bin/www",
-    "start": "node ./bin/www"
+    "dev": "npx nodemon ./src/bin/www",
+    "start": "node ./src/bin/www"
   },
   "keywords": [],
   "author": "",
