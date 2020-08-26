@@ -4,7 +4,7 @@ const { pool, pool2 } = require('../bin/dbConnection');
 const imglink = "http://images.portalgeek.mx/uploads/";
 
 const postear = async(token) =>{
-  const productos = await pool.query('SELECT * FROM products WHERE STATUS = 1'); //DISPONIBLE ACTIVO
+  const productos = await pool.query('SELECT * FROM products WHERE status = 1'); //DISPONIBLE ACTIVO
   const itembd = await pool2.query('SELECT * FROM ml_items');
   for(var i = 0 ; i < productos.length; i++){
     try {
