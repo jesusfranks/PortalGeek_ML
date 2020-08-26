@@ -5,7 +5,6 @@ const path = require('path');
 const helmet = require('helmet');
 const session = require('cookie-session');
 const { job, rTokenJob }  = require('./utils/cronjob'); 
-const newrelic = require('newrelic');
 
 //Settings
 app.set('views', path.join(__dirname, 'views'));
