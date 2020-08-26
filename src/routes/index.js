@@ -12,6 +12,15 @@ router.get('/', (req, res) => {
     console.log(req.session.user)
   });
 
+  router.get('/awake', (req, res) => {
+    const date = new Date();
+    const fecha = date.toDateString().split(" ").join("_");
+    const hora = date.getHours().toString();
+    const min = date.getMinutes().toString();
+    const momento = fecha + "_" + hora + ":" + min;
+    console.log("Me despertaron: "+ momento)
+  });
+
 router.post('/login', (req, res) => {
   if (req.body.password === SYS_PWD) {
     req.session.user = true;
