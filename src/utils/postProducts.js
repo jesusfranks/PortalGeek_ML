@@ -26,7 +26,7 @@ async function postProducts(producto, user, meliObject){
     var images = [];
     const imgs  = await pool.query('SELECT image FROM products_images WHERE product_id = ?',[producto.id]);
     for(var i = 0; i<imgs.length; i++){
-      images[i] = {source: imgs[i].image}
+      images[i] = {source: "http://images.portalgeek.mx/uploads/" + imgs[i].image}
     }
     const predict = await meliObject.get(`/sites/${user.site_id}/category_predictor/predict?title=${encodeURIComponent(producto.title)}`);
     const item = await meliObject.post('/items', {
@@ -60,7 +60,7 @@ async function updatePostProducts(producto, item_id, token){
     var images = [];
     const imgs  = await pool.query('SELECT image FROM products_images WHERE product_id = ?',[producto.id]);
     for(var i = 0; i<imgs.length; i++){
-      images[i] = {source: imgs[i].image}
+      images[i] = {source: "http://images.portalgeek.mx/uploads/" + imgs[i].image}
     }
     const act = {
       price: producto.price,
