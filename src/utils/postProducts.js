@@ -1,7 +1,7 @@
 const { MeliObject } = require('../utils');
 const { pool, pool2 } = require('../bin/dbConnection');
 
-const imglink = "http://images.portalgeek.mx/uploads/";
+const imglink = "https://portalgeek.mx/assets/uploads/";
 
 const postear = async(token) =>{
   const productos = await pool.query('SELECT * FROM products WHERE status = 1'); //DISPONIBLE ACTIVO
