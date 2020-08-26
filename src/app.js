@@ -5,6 +5,7 @@ const path = require('path');
 const helmet = require('helmet');
 const session = require('cookie-session');
 const { job, rTokenJob }  = require('./utils/cronjob'); 
+require('newrelic');
 
 //Settings
 app.set('views', path.join(__dirname, 'views'));
@@ -36,7 +37,7 @@ app.use(require('./routes/postOne'));
 app.use(require('./routes/postEverything'));
 
 //Cronjob
-job.start();
+//job.start();
 rTokenJob.start()
 
 module.exports = app;
