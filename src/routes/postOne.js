@@ -7,6 +7,7 @@ const { MeliObject } = require('../utils');
 const { pool2 } = require('../bin/dbConnection');
 const { Router } = require('express');
 const { response } = require('../app');
+cons path = require('path');
 
 /*const storage = multer.diskStorage({
     destination: (req, file, cb) => cb(null, './public/pictures'),
