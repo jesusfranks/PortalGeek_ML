@@ -47,4 +47,7 @@ app.use(require('./routes/postEverything'));
 job.start();
 rTokenJob.start()
 
-module.exports = app;
+module.exports = { 
+  app,
+  upload
+};
