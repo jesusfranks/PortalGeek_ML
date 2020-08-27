@@ -8,7 +8,7 @@ const multer = require('multer');
 const { job, rTokenJob }  = require('./utils/cronjob'); 
 
 const storage = multer.diskStorage({
-  destination: (req, file, cb) => cb(null, 'public/pictures'),
+  destination: (req, file, cb) => cb(null, './public/pictures'),
   filename: (req, file, cb) => cb(null, Date.now() + file.originalname)
 });
 
