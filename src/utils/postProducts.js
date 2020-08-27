@@ -42,7 +42,7 @@ async function postProducts(producto, user, meliObject){
         currency_id: 'MXN',
         available_quantity: producto.available,
         buying_mode: 'buy_it_now',
-        listing_type_id: 'Clásica',
+        listing_type_id: 'gold_special', //free, bronze, silver, gold, gold_special, gold_premium, gold_pro
         condition: 'new',
         description: producto.description,
         tags: [ 'immediate_payment' ],
