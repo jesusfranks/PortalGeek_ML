@@ -7,17 +7,10 @@ const { MeliObject } = require('../utils');
 const { pool2 } = require('../bin/dbConnection');
 const { Router } = require('express');
 const { response } = require('../app');
-const path = require('path');
 
-/*const storage = multer.diskStorage({
-    destination: (req, file, cb) => cb(null, './public/pictures'),
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => cb(null, '../public/pictures'),
     filename: (req, file, cb) => cb(null, Date.now() + file.originalname)
-  });*/
-  const storage = multer.diskStorage({
-    destination: path.join(__dirname + 'public/pictures'),
-    filename(req, file, cb) {
-      cb(null, Date.now() + path.extname(file.originalname));
-    }
   });
   
 const upload = multer({ storage });
@@ -64,7 +57,7 @@ router.get('/formEdit/:item_id', validateToken, async(req, res) =>{
   }
 });
 
-router.post('/post', validateToken, upload.single('image'), async (req, res) => {
+router.post('/post', validateToken, upload.single('picture'), async (req, res) => {
   try {
     const meliObject = new MeliObject(res.locals.access_token);
     const user = await meliObject.get('/users/me');
