@@ -34,7 +34,8 @@ async function postProducts(producto, user, meliObject){
       images[i] = {source: imglink + imgs[i].image}
     }
     const predict = await meliObject.get(`/sites/${user.site_id}/category_predictor/predict?title=${encodeURIComponent(producto.name)}`);
-    const item = await meliObject.post('/items', {
+    //const item = 
+    await meliObject.post('/items', {
         title: producto.name,
         category_id: predict.id,
         price: producto.price,
@@ -48,11 +49,11 @@ async function postProducts(producto, user, meliObject){
         pictures: images
       });
       console.log('Title item:', producto.name);
-     const ids = {
+     /*const ids = {
         product_id: producto.id,
         item_id: item.id
       }
-      await pool2.query('INSERT INTO ml_items set ?', [ids])
+      await pool2.query('INSERT INTO ml_items set ?', [ids]);*/
       console.log('publicado en la categoría:', predict.name);
       console.log('category probability (0-1):', predict.prediction_probability, predict.variations);
   } catch(err) {
