@@ -8,8 +8,12 @@ const { pool2 } = require('../bin/dbConnection');
 const { Router } = require('express');
 const { response } = require('../app');
 
-const storage = multer.diskStorage({
+/*const storage = multer.diskStorage({
     destination: (req, file, cb) => cb(null, './public/pictures'),
+    filename: (req, file, cb) => cb(null, Date.now() + file.originalname)
+  });*/
+  const storage = multer.diskStorage({
+    destination: path.join(__dirname + 'public/pictures'),
     filename: (req, file, cb) => cb(null, Date.now() + file.originalname)
   });
   
