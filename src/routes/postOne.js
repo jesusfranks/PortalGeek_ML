@@ -9,7 +9,7 @@ const { Router } = require('express');
 const { response } = require('../app');
 
 const storage = multer.diskStorage({
-    destination: (req, file, cb) => cb(null, '../public/pictures'),
+    destination: (req, file, cb) => cb(null, './src/public/pictures'),
     filename: (req, file, cb) => cb(null, Date.now() + file.originalname)
   });
   
