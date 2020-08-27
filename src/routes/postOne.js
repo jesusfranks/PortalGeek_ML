@@ -15,7 +15,9 @@ const path = require('path');
   });*/
   const storage = multer.diskStorage({
     destination: path.join(__dirname + 'public/pictures'),
-    filename: (req, file, cb) => cb(null, Date.now() + file.originalname)
+    filename(req, file, cb) {
+      cb(null, Date.now() + path.extname(file.originalname));
+    }
   });
   
 const upload = multer({ storage });

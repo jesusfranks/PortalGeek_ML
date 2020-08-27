@@ -56,6 +56,7 @@ async function postProducts(producto, user, meliObject){
       await pool2.query('INSERT INTO ml_items set ?', [ids]);*/
       console.log('publicado en la categoría:', predict.name);
       console.log('category probability (0-1):', predict.prediction_probability, predict.variations);
+      console.log('----------------------------------------------------------------------');
   } catch(err) {
     console.log('Something went wrong', err);
   }
