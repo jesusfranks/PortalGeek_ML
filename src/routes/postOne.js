@@ -61,7 +61,7 @@ router.get('/formEdit/:item_id', validateToken, async(req, res) =>{
   }
 });
 
-router.post('/post', validateToken, upload.single('picture'), async (req, res) => {
+router.post('/post', validateToken, upload.single('image'), async (req, res) => {
   try {
     const meliObject = new MeliObject(res.locals.access_token);
     const user = await meliObject.get('/users/me');
