@@ -4,15 +4,7 @@ const exhbs = require('express-handlebars');
 const path = require('path');
 const helmet = require('helmet');
 const session = require('cookie-session');
-const multer = require('multer');
 const { job, rTokenJob }  = require('./utils/cronjob'); 
-
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => cb(null, './public/pictures'),
-  filename: (req, file, cb) => cb(null, Date.now() + file.originalname)
-});
-
-const upload = multer({ storage });
 
 //Settings
 app.set('views', path.join(__dirname, 'views'));
@@ -47,7 +39,4 @@ app.use(require('./routes/postEverything'));
 job.start();
 rTokenJob.start()
 
-module.exports = { 
-  app,
-  upload
-};
+module.exports = app;

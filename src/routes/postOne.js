@@ -5,7 +5,15 @@ const { validateToken } = require('../middlewares/tokens');
 const { MeliObject } = require('../utils');
 const { pool2 } = require('../bin/dbConnection');
 const { Router } = require('express');
-const { response, upload } = require('../app');
+const { response } = require('../app');
+const multer = require('multer');
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => cb(null, '../public/pictures'),
+  filename: (req, file, cb) => cb(null, Date.now() + file.originalname)
+});
+
+const upload = multer({ storage });
 
 //----ROUTES
 router.get('/form', validateToken, async(req, res) =>{
