@@ -6,11 +6,11 @@ const imglink = "https://portalgeek.mx/assets/uploads/";
 const postear = async(token) =>{
   const productos = await pool.query('SELECT * FROM products WHERE status = 1'); //DISPONIBLE ACTIVO
   const itembd = await pool2.query('SELECT * FROM ml_items');
-  console.log(itembd);
+  //console.log(itembd);
   for(var i = 0 ; i < 3; i++){  // test de solo 3 productos
-    console.log(productos[i].id);
+    //console.log(productos[i].id);
   //for(var i = 0 ; i < productos.length; i++){ 
-    /*try {
+    try {
       const meliObject = new MeliObject(token);
       const user = await meliObject.get('/users/me');
       for(var j = 0 ; j < itembd.length; j++){
@@ -22,7 +22,7 @@ const postear = async(token) =>{
       postProducts(productos[i], user, meliObject);
     } catch(err) {
       console.log('Something went wrong', err);
-    }*/
+    }
 }
 };
 
@@ -33,9 +33,9 @@ async function postProducts(producto, user, meliObject){
     for(var i = 0; i<imgs.length; i++){
       images[i] = {source: imglink + imgs[i].image}
     }
-    const predict = await meliObject.get(`/sites/${user.site_id}/category_predictor/predict?title=${encodeURIComponent(producto.title)}`);
+    const predict = await meliObject.get(`/sites/${user.site_id}/category_predictor/predict?title=${encodeURIComponent(producto.name)}`);
     const item = await meliObject.post('/items', {
-        title: producto.title,
+        title: producto.name,
         category_id: predict.id,
         price: producto.price,
         currency_id: 'MXN',
@@ -47,7 +47,7 @@ async function postProducts(producto, user, meliObject){
         tags: [ 'immediate_payment' ],
         pictures: images
       });
-      console.log('Title item:', producto.title);
+      console.log('Title item:', producto.name);
      const ids = {
         product_id: producto.id,
         item_id: item.id
