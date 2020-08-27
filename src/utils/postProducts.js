@@ -34,6 +34,7 @@ async function postProducts(producto, user, meliObject){
       images[i] = {source: imglink + imgs[i].image}
     }
     const predict = await meliObject.get(`/sites/${user.site_id}/category_predictor/predict?title=${encodeURIComponent(producto.name)}`);
+    console.log(predict);
     const item = await meliObject.post('/items', {
         title: producto.name,
         category_id: predict.id,
