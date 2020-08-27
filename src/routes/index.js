@@ -18,7 +18,8 @@ router.get('/', (req, res) => {
     const hora = date.getHours().toString();
     const min = date.getMinutes().toString();
     const momento = fecha + "_" + hora + ":" + min;
-    console.log("Me despertaron: "+ momento)
+    console.log("Me despertaron: "+ momento);
+    res.send("Me despertaron: "+ momento);
   });
 
 router.post('/login', (req, res) => {

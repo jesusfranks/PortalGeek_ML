@@ -6,7 +6,8 @@ const imglink = "https://portalgeek.mx/assets/uploads/";
 const postear = async(token) =>{
   const productos = await pool.query('SELECT * FROM products WHERE status = 1'); //DISPONIBLE ACTIVO
   const itembd = await pool2.query('SELECT * FROM ml_items');
-  for(var i = 0 ; i < productos.length; i++){
+  for(var i = 0 ; i < 3; i++){  // test de solo 3 productos
+  //for(var i = 0 ; i < productos.length; i++){ 
     try {
       const meliObject = new MeliObject(token);
       const user = await meliObject.get('/users/me');
