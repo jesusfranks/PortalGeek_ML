@@ -23,6 +23,7 @@ router.get('/form', validateToken, async(req, res) =>{
       const categories = await meliObject.get(`/sites/${user.site_id}/categories`);
       const currencies = await meliObject.get('/currencies');
       const listing_types = await meliObject.get(`/sites/${user.site_id}/listing_types`);
+      console.log(listing_types);
       res.render('form', {
         user,
         categories,
