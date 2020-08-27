@@ -8,7 +8,7 @@ const postear = async(token) =>{
   const itembd = await pool2.query('SELECT * FROM ml_items');
   console.log(itembd);
   for(var i = 0 ; i < 3; i++){  // test de solo 3 productos
-    console.log(productos[i]);
+    console.log(productos[i].id);
   //for(var i = 0 ; i < productos.length; i++){ 
     /*try {
       const meliObject = new MeliObject(token);
