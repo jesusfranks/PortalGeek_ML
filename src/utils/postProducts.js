@@ -44,7 +44,7 @@ async function postProducts(producto, user, meliObject){
         buying_mode: 'buy_it_now',
         listing_type_id: 'gold_special', //free, bronze, silver, gold, gold_special, gold_premium, gold_pro
         condition: 'new',
-        description: producto.description,
+        description: {plain_text: producto.description},
         tags: [ 'immediate_payment' ],
         pictures: images
       });
