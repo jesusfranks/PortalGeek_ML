@@ -34,7 +34,7 @@ async function postProducts(producto, user, meliObject){
       images[i] = {source: imglink + imgs[i].image}
     }
     const predict = await meliObject.get(`/sites/${user.site_id}/category_predictor/predict?title=${encodeURIComponent(producto.name)}`);
-    console.log(predict);
+    console.log(images);
     const item = await meliObject.post('/items', {
         title: producto.name,
         category_id: predict.id,
@@ -44,7 +44,7 @@ async function postProducts(producto, user, meliObject){
         buying_mode: 'buy_it_now',
         listing_type_id: 'gold_special', //free, bronze, silver, gold, gold_special, gold_premium, gold_pro
         condition: 'new',
-        description: {plain_text: producto.description},
+        description: [{plain_text: producto.description}],
         tags: [ 'immediate_payment' ],
         pictures: images
       });
