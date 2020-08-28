@@ -50,11 +50,11 @@ async function postProducts(producto, user, meliObject){
       });
       console.log('Title item:', producto.name);
       console.log(item);
-     const ids = {
+     /*const ids = {
         product_id: producto.id,
         item_id: item.id
       }
-      await pool2.query('INSERT INTO ml_items set ?', [ids]);
+      await pool2.query('INSERT INTO ml_items set ?', [ids]);*/
       console.log('publicado en la categoría:', predict.name);
       console.log('category probability (0-1):', predict.prediction_probability, predict.variations);
       console.log('----------------------------------------------------------------------');
