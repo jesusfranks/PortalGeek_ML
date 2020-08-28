@@ -4,12 +4,13 @@ const { pool, pool2 } = require('../bin/dbConnection');
 const imglink = "https://portalgeek.mx/assets/uploads/";
 
 const postear = async(token) =>{
-  const productos = await pool.query('SELECT * FROM products WHERE status = 1'); //DISPONIBLE ACTIVO
+  //const productos = await pool.query('SELECT * FROM products WHERE status = 1'); //DISPONIBLE ACTIVO
+  const productos = await pool.query('SELECT * FROM products WHERE id = 4756');
   const itembd = await pool2.query('SELECT * FROM ml_items');
   //console.log(itembd);
-  for(var i = 0 ; i < 3; i++){  // test de solo 3 productos
+  //for(var i = 0 ; i < 3; i++){  // test de solo 3 productos
     //console.log(productos[i].id);
-  //for(var i = 0 ; i < productos.length; i++){ 
+  for(var i = 0 ; i < productos.length; i++){ 
     try {
       const meliObject = new MeliObject(token);
       const user = await meliObject.get('/users/me');
@@ -45,19 +46,17 @@ async function postProducts(producto, user, meliObject){
         buying_mode: 'buy_it_now',
         listing_type_id: 'gold_special', //free, bronze, silver, gold, gold_special, gold_premium, gold_pro
         condition: 'new',
-        description: {
-          plain_text: producto.description
-        },
+        description: JSON.stringify(producto.description),
         tags: [ 'immediate_payment' ],
-        pictures: images
+        pictures: JSON.stringify(images)
       });
       console.log('Title item:', producto.name);
       console.log(item);
-     /*const ids = {
+     const ids = {
         product_id: producto.id,
         item_id: item.id
       }
-      await pool2.query('INSERT INTO ml_items set ?', [ids]);*/
+      await pool2.query('INSERT INTO ml_items set ?', [ids]);
       console.log('publicado en la categoría:', predict.name);
       console.log('category probability (0-1):', predict.prediction_probability, predict.variations);
       console.log('----------------------------------------------------------------------');
