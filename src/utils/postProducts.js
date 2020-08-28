@@ -48,7 +48,7 @@ async function postProducts(producto, user, meliObject){
         condition: 'new',
         description: JSON.stringify(producto.description),
         tags: [ 'immediate_payment' ],
-        pictures: JSON.stringify(images)
+        pictures: images
       });
       console.log('Title item:', producto.name);
       console.log(item);
