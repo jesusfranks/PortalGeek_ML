@@ -7,9 +7,7 @@ const postear = async(token) =>{
   //const productos = await pool.query('SELECT * FROM products WHERE status = 1'); //DISPONIBLE ACTIVO
   const productos = await pool.query('SELECT * FROM products WHERE id = 4756');
   const itembd = await pool2.query('SELECT * FROM ml_items');
-  //console.log(itembd);
   //for(var i = 0 ; i < 3; i++){  // test de solo 3 productos
-    //console.log(productos[i].id);
   for(var i = 0 ; i < productos.length; i++){ 
     try {
       const meliObject = new MeliObject(token);
