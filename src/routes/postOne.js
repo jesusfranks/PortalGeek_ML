@@ -3,9 +3,6 @@ const router = express.Router();
 const fetch = require('node-fetch');
 const { validateToken } = require('../middlewares/tokens');
 const { MeliObject } = require('../utils');
-const { pool2 } = require('../bin/dbConnection');
-const { Router } = require('express');
-const { response } = require('../app');
 const multer = require('multer');
 
 const storage = multer.diskStorage({
